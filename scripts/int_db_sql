@@ -1,0 +1,42 @@
+/********************************************************************************************
+* Project      : Data Warehouse Setup Script
+* File Name    : create_datawarehouse.sql
+* Description  : This script initializes the Data Warehouse environment by creating 
+*                the main database and organizing it into three schemas:
+*                   - bronze : Raw data ingestion layer
+*                   - silver : Cleaned and transformed data layer
+*                   - gold   : Aggregated and analytics-ready data layer
+*
+* Database     : PostgreSQL
+* Author       : Shuvro Sankar Sen
+* Created On   : 29/10/2025
+* Version      : 1.0
+*
+* Notes:
+*   - Drops the existing 'DataWarehouse' database if it exists.
+*   - Creates a new 'DataWarehouse' database with UTF8 encoding.
+*   - Defines separate schemas for data processing stages.
+********************************************************************************************/
+
+
+
+-- Database: DataWarehouse
+
+DROP DATABASE IF EXISTS "DataWarehouse";
+
+CREATE DATABASE "DataWarehouse"
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'C'
+    LC_CTYPE = 'C'
+    LOCALE_PROVIDER = 'libc'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+
+-- Create Schema
+CREATE SCHEMA bronze;
+CREATE SCHEMA silver;
+CREATE SCHEMA gold;
+ 
