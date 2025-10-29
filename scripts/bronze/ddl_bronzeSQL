@@ -1,1 +1,137 @@
+/********************************************************************************************
+ * Project:   Data Warehouse - Bronze Layer Table Creation
+ * Author:    Shuvro Sankar Sen
+ * Database:  PostgreSQL
+ * Tool:      pgAdmin 4
+ * Date:      2025-10-29
+ *
+ * Description:
+ * -----------------------------------------------------------------------------
+ * This script creates the initial (Bronze Layer) tables for the Data Warehouse.
+ * The Bronze layer is the raw ingestion layer that stores data as-is from 
+ * multiple source systems such as CRM and ERP. Each table represents a distinct
+ * data domain extracted from source files or systems.
+ *
+ * Tables Created:
+ * -----------------------------------------------------------------------------
+ * 1. bronze.crm_cust_info     – Customer master data from CRM system
+ * 2. bronze.crm_prd_info      – Product master data from CRM system
+ * 3. bronze.crm_sales_details – Sales transaction details from CRM system
+ * 4. bronze.erp_loc_a101      – Location mapping data from ERP system
+ * 5. bronze.erp_cust_az12     – Customer demographic data from ERP system
+ * 6. bronze.erp_px_cat_g1v2   – Product category and subcategory mapping from ERP
+ *
+ * Each table is created with DROP IF EXISTS statements to ensure re-runnability.
+ * After creation, sample SELECT queries are provided to verify data and row counts.
+ *
+ * Usage:
+ * -----------------------------------------------------------------------------
+ * 1. Run this script in pgAdmin 4 Query Tool.
+ * 2. After table creation, use the Import Tool or \copy command to bulk-load data
+ *    from CSV files located in the datasets directory.
+ * 3. Verify row counts to ensure successful ingestion.
+ *
+ * Next Step:
+ * -----------------------------------------------------------------------------
+ * Proceed to the SILVER layer script for data transformation, cleansing, 
+ * and standardization.
+ ********************************************************************************************/
+
+
+-- ============================================================================
+-- CRM Customer Information Table
+-- ============================================================================
+DROP TABLE IF EXISTS bronze.crm_cust_info;
+CREATE TABLE bronze.crm_cust_info (
+    cst_id              INT,
+    cst_key             VARCHAR(50),
+    cst_firstname       VARCHAR(50),
+    cst_lastname        VARCHAR(50),
+    cst_material_status VARCHAR(50),
+    cst_gmdr            VARCHAR(50),
+    cst_create_date     DATE
+);
+
+SELECT * FROM bronze.crm_cust_info LIMIT 5;
+SELECT COUNT(*) FROM bronze.crm_cust_info;
+
+
+-- ============================================================================
+-- CRM Product Information Table
+-- ============================================================================
+DROP TABLE IF EXISTS bronze.crm_prd_info;
+CREATE TABLE bronze.crm_prd_info (
+    prd_id         INT,
+    prd_key        VARCHAR(50),
+    prd_nm         VARCHAR(50),
+    prd_cost       INT,
+    prd_line       VARCHAR(50),
+    prd_start_dt   DATE,
+    prd_end_dt     DATE
+);
+
+SELECT * FROM bronze.crm_prd_info LIMIT 5;
+SELECT COUNT(*) FROM bronze.crm_prd_info;
+
+
+-- ============================================================================
+-- CRM Sales Details Table
+-- ============================================================================
+DROP TABLE IF EXISTS bronze.crm_sales_details;
+CREATE TABLE bronze.crm_sales_details (
+    sls_ord_num   VARCHAR(50),
+    sls_prd_key   VARCHAR(50),
+    sls_cust_id   INT,
+    sls_order_dt  INT,
+    sls_ship_dt   INT,
+    sls_due_dt    INT,
+    sls_sales     INT,
+    sls_quantity  INT,
+    sls_price     INT
+);
+
+SELECT * FROM bronze.crm_sales_details LIMIT 5;
+SELECT COUNT(*) FROM bronze.crm_sales_details;
+
+
+-- ============================================================================
+-- ERP Location Data Table
+-- ============================================================================
+DROP TABLE IF EXISTS bronze.erp_loc_a101;
+CREATE TABLE bronze.erp_loc_a101 (
+    cid     VARCHAR(50),
+    cntry   VARCHAR(50)
+);
+
+SELECT * FROM bronze.erp_loc_a101 LIMIT 5;
+SELECT COUNT(*) FROM bronze.erp_loc_a101;
+
+
+-- ============================================================================
+-- ERP Customer Demographics Table
+-- ============================================================================
+DROP TABLE IF EXISTS bronze.erp_cust_az12;
+CREATE TABLE bronze.erp_cust_az12 (
+    cid     VARCHAR(50),
+    bdate   DATE,
+    gen     VARCHAR(50)
+);
+
+SELECT * FROM bronze.erp_cust_az12 LIMIT 5;
+SELECT COUNT(*) FROM bronze.erp_cust_az12;
+
+
+-- ============================================================================
+-- ERP Product Category Table
+-- ============================================================================
+DROP TABLE IF EXISTS bronze.erp_px_cat_g1v2;
+CREATE TABLE bronze.erp_px_cat_g1v2 (
+    id            VARCHAR(50),
+    cat           VARCHAR(50),
+    subcat        VARCHAR(50),
+    maintenance   VARCHAR(50)
+);
+
+SELECT * FROM bronze.erp_px_cat_g1v2 LIMIT 5;
+SELECT COUNT(*) FROM bronze.erp_px_cat_g1v2;
 
